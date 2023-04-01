@@ -1,0 +1,16 @@
+name: FreeCases
+version: '${project.version}'
+main: com.jodexindustries.freecases.FreeCases
+api-version: 1.16
+depend:
+  - DonateCase
+softdepend:
+  - PlaceholderAPI
+commands:
+  freecases:
+    aliases: [fc]
+permissions:
+  freecases.reload:
+    default: op
+  freecases.use:
+    default: true
