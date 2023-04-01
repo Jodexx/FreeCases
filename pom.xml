@@ -17,6 +17,8 @@
     </properties>
 
     <build>
+        <finalName>FreeCases</finalName>
+        <directory>build</directory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
