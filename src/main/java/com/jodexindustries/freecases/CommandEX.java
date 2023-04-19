@@ -31,12 +31,12 @@ public class CommandEX implements CommandExecutor {
                     String minutechar = CustomConfig.getConfig().getString("Minute");
                     String hourchar = CustomConfig.getConfig().getString("Hour");
                     int hours = time / 3600;
-                    int minutes = time / 60;
-                    long seconds = time % 60 % 60;
+                    int minutes = (time / 60) - hours * 60;
+                    int seconds = time % 60 % 60;
                     String hour = hours + hourchar;
                     String minute = minutes + minutechar;
                     String second = seconds + secondchar;
-                    if(seconds == 0) {
+                    if (seconds == 0) {
                         second = "";
                     }
                     if (hours == 0) {
@@ -45,7 +45,7 @@ public class CommandEX implements CommandExecutor {
                             minute = "";
                         }
                     }
-                    String timerep = second + minute + hour;
+                    String timerep = hour + minute + second;
                     String casename = CustomConfig.getConfig().getString("Casename");
                     if (time == 0) {
                         sender.sendMessage(ChatColor.translateAlternateColorCodes('&',

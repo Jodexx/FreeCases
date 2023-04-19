@@ -23,7 +23,7 @@ public class Placeholder extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getVersion() {
-        return "1.0.0";
+        return "1.0.1";
     }
 
     @Override
@@ -39,7 +39,7 @@ public class Placeholder extends PlaceholderExpansion {
             String hourchar = ChatColor.translateAlternateColorCodes('&', CustomConfig.getConfig().getString("Hour"));
             int time = cooldownManager.getCooldown(player.getUniqueId());
             int hours = time / 3600;
-            int minutes = time / 60;
+            int minutes = (time / 60) - hours * 60;
             int seconds = time % 60 % 60;
             String hour = hours + hourchar;
             String minute = minutes + minutechar;
@@ -53,8 +53,9 @@ public class Placeholder extends PlaceholderExpansion {
                     minute = "";
                 }
             }
+            String timerep = hour + minute + second;
             if(time != 0) {
-                return second + minute + hour;
+                return timerep;
             } else {
                 return ChatColor.translateAlternateColorCodes('&', CustomConfig.getConfig().getString("Received"));
             }
