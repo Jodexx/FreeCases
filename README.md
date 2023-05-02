@@ -1,0 +1,2 @@
+# FreeCases
+DonateCase Addon
