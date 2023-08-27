@@ -6,9 +6,6 @@ depend:
   - DonateCase
 softdepend:
   - PlaceholderAPI
-commands:
-  freecases:
-    aliases: [fc]
 permissions:
   freecases.reload:
     default: op

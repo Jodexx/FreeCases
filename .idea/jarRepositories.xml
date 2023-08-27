@@ -17,6 +17,11 @@
       <option name="url" value="https://hub.spigotmc.org/nexus/content/repositories/snapshots/" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="JodexIndustries" />
+      <option name="name" value="JodexIndustries Repo" />
+      <option name="url" value="https://repo.jodexindustries.space/releases" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="placeholderapi" />
       <option name="name" value="placeholderapi" />
       <option name="url" value="https://repo.extendedclip.com/content/repositories/placeholderapi/" />

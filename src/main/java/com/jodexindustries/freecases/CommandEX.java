@@ -1,27 +1,26 @@
 package com.jodexindustries.freecases;
 
+import com.jodexindustries.donatecase.api.Case;
+import com.jodexindustries.donatecase.api.SubCommand;
+import com.jodexindustries.donatecase.api.SubCommandType;
 import me.clip.placeholderapi.PlaceholderAPI;
-import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommandEX implements CommandExecutor {
+public class CommandEX implements SubCommand {
     CooldownManager cooldownManager = new CooldownManager();
     Utils utils = new Utils();
+
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String @NotNull [] args) {
+    public void execute(CommandSender sender, String[] args) {
         if(args.length == 0) {
             if (!(sender instanceof Player)) {
                 sender.sendMessage("Don't use console!");
-                return false;
+                return;
             }
             Player player = (Player) sender;
             if (sender.hasPermission("freecases.use")) {
@@ -50,7 +49,7 @@ public class CommandEX implements CommandExecutor {
                     if (time == 0) {
                         sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
                                 CustomConfig.getConfig().getString("Done")));
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "donatecase givekey " + sender.getName() + " "  + casename + " 1");
+                        Case.addKeys(casename, sender.getName(), 1);
                         List<String> players = CustomConfig.getData().getStringList("Used");
                         players.add(player.getName());
                         CustomConfig.getData().set("Used", players);
@@ -75,6 +74,15 @@ public class CommandEX implements CommandExecutor {
                 }
             }
         }
-        return false;
+    }
+
+    @Override
+    public List<String> getTabCompletions(CommandSender commandSender, String[] strings) {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public SubCommandType getType() {
+        return SubCommandType.PLAYER;
     }
 }

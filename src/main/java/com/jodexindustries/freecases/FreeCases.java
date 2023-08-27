@@ -1,5 +1,6 @@
 package com.jodexindustries.freecases;
 
+import com.jodexindustries.donatecase.api.SubCommandManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -20,7 +21,7 @@ public final class FreeCases extends JavaPlugin {
         if(getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new Placeholder().register();
         }
-        getCommand("freecases").setExecutor(new CommandEX());
+        SubCommandManager.registerSubCommand("free", new CommandEX());
     }
     public static FreeCases getInstance() {
         return plugin;

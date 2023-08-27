@@ -18,5 +18,5 @@ AlreadyReceived: "&cYou have already received a free case!"
 ConfigReloaded: "&aConfig successful reloaded!"
 PermissionsNeed: "&cYou don't have permissions!"
 
-# /fc - get free case; permission: freecases.use; default: true
-# /fc reload - reload config; permission: freecases.reload; default: false
+# /dc free - get free case; permission: freecases.use; default: true
+# /dc free reload - reload config; permission: freecases.reload; default: false

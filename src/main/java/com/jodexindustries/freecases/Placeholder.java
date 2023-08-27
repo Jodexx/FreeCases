@@ -8,8 +8,6 @@ import org.jetbrains.annotations.NotNull;
 public class Placeholder extends PlaceholderExpansion {
     CooldownManager cooldownManager = new CooldownManager();
 
-    Utils utils = new Utils();
-
 
     @Override
     public @NotNull String getAuthor() {

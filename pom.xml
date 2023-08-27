@@ -6,7 +6,7 @@
 
     <groupId>com.jodexindustries</groupId>
     <artifactId>FreeCases</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <packaging>jar</packaging>
 
     <name>FreeCases</name>
@@ -67,6 +67,11 @@
             <id>placeholderapi</id>
             <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
+        <repository>
+            <id>JodexIndustries</id>
+            <name>JodexIndustries Repo</name>
+            <url>https://repo.jodexindustries.space/releases</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -81,6 +86,11 @@
             <artifactId>placeholderapi</artifactId>
             <version>2.11.2</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.jodexindustries.donatecase</groupId>
+            <artifactId>DonateCaseAPI</artifactId>
+            <version>1.1.1</version>
         </dependency>
     </dependencies>
 </project>
