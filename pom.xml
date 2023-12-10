@@ -6,7 +6,7 @@
 
     <groupId>com.jodexindustries</groupId>
     <artifactId>FreeCases</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <packaging>jar</packaging>
 
     <name>FreeCases</name>
@@ -17,8 +17,6 @@
     </properties>
 
     <build>
-        <finalName>FreeCases</finalName>
-        <directory>build</directory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -90,7 +88,8 @@
         <dependency>
             <groupId>com.jodexindustries.donatecase</groupId>
             <artifactId>DonateCaseAPI</artifactId>
-            <version>1.1.1</version>
+            <version>1.1.9</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

@@ -16,7 +16,7 @@ public class EventListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-            if (!utils.CheckUsage(player.getName())) {
+            if (utils.isUsed(player.getName())) {
                 CooldownManager cooldownManager = new CooldownManager();
                 cooldownManager.setCooldown(player.getUniqueId(), CustomConfig.getConfig().getInt("TimeToPlay"));
                 new BukkitRunnable() {

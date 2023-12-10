@@ -24,7 +24,7 @@ public class CommandEX implements SubCommand {
             }
             Player player = (Player) sender;
             if (sender.hasPermission("freecases.use")) {
-                if (!utils.CheckUsage(player.getName())) {
+                if (utils.isUsed(player.getName())) {
                     int time = cooldownManager.getCooldown(player.getUniqueId());
                     String secondchar = CustomConfig.getConfig().getString("Second");
                     String minutechar = CustomConfig.getConfig().getString("Minute");
@@ -78,11 +78,22 @@ public class CommandEX implements SubCommand {
 
     @Override
     public List<String> getTabCompletions(CommandSender commandSender, String[] strings) {
+        if(strings.length == 1) {
+            List<String> list = new ArrayList<>();
+            if(commandSender.hasPermission("freecases.reload")) {
+                list.add("reload");
+            }
+            return list;
+        }
         return new ArrayList<>();
     }
 
     @Override
     public SubCommandType getType() {
         return SubCommandType.PLAYER;
+    }
+    @Override
+    public String getDescription() {
+        return "Get free case";
     }
 }
