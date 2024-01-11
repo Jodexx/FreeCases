@@ -88,7 +88,7 @@
         <dependency>
             <groupId>com.jodexindustries.donatecase</groupId>
             <artifactId>DonateCaseAPI</artifactId>
-            <version>1.1.9</version>
+            <version>1.2.4</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
