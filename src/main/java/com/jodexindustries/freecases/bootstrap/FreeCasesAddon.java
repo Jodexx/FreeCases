@@ -1,5 +1,6 @@
 package com.jodexindustries.freecases.bootstrap;
 
+import com.jodexindustries.donatecase.api.SubCommandManager;
 import com.jodexindustries.donatecase.api.addon.JavaAddon;
 import com.jodexindustries.freecases.utils.CustomConfig;
 import com.jodexindustries.freecases.utils.Utils;
@@ -21,6 +22,10 @@ public final class FreeCasesAddon extends JavaAddon implements FreeCases {
         }
         config.setup();
         Utils.load(this);
+    }
+    @Override
+    public void onDisable() {
+        SubCommandManager.unregisterSubCommand("free");
     }
 
     @Override
