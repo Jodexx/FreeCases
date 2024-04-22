@@ -1,0 +1,3 @@
+name: FreeCases
+version: '${version}'
+main: com.jodexindustries.freecases.bootstrap.FreeCasesAddon

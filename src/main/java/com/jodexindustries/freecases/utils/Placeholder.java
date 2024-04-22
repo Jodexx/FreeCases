@@ -1,12 +1,16 @@
-package com.jodexindustries.freecases;
+package com.jodexindustries.freecases.utils;
 
+import com.jodexindustries.freecases.bootstrap.FreeCases;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
 public class Placeholder extends PlaceholderExpansion {
-    CooldownManager cooldownManager = new CooldownManager();
+    private final FreeCases freeCases;
+    public Placeholder(FreeCases freeCases) {
+        this.freeCases = freeCases;
+    }
 
 
     @Override
@@ -21,7 +25,7 @@ public class Placeholder extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getVersion() {
-        return "1.0.4";
+        return "1.0.5";
     }
 
     @Override
@@ -32,10 +36,10 @@ public class Placeholder extends PlaceholderExpansion {
     @Override
     public String onRequest(OfflinePlayer player, String params) {
         if(params.equalsIgnoreCase("time")) {
-            String secondchar = ChatColor.translateAlternateColorCodes('&', CustomConfig.getConfig().getString("Second"));
-            String minutechar = ChatColor.translateAlternateColorCodes('&', CustomConfig.getConfig().getString("Minute"));
-            String hourchar = ChatColor.translateAlternateColorCodes('&', CustomConfig.getConfig().getString("Hour"));
-            int time = cooldownManager.getCooldown(player.getUniqueId());
+            String secondchar = ChatColor.translateAlternateColorCodes('&', freeCases.getAddonConfig().getConfig().getString("Second"));
+            String minutechar = ChatColor.translateAlternateColorCodes('&', freeCases.getAddonConfig().getConfig().getString("Minute"));
+            String hourchar = ChatColor.translateAlternateColorCodes('&', freeCases.getAddonConfig().getConfig().getString("Hour"));
+            int time = CooldownManager.getCooldown(player.getUniqueId());
             int hours = time / 3600;
             int minutes = (time / 60) - hours * 60;
             int seconds = time % 60 % 60;
@@ -55,7 +59,7 @@ public class Placeholder extends PlaceholderExpansion {
             if(time != 0) {
                 return timerep;
             } else {
-                return ChatColor.translateAlternateColorCodes('&', CustomConfig.getConfig().getString("Received"));
+                return ChatColor.translateAlternateColorCodes('&', freeCases.getAddonConfig().getConfig().getString("Received"));
             }
         }
 

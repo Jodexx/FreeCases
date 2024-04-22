@@ -1,8 +1,10 @@
-package com.jodexindustries.freecases;
+package com.jodexindustries.freecases.commands;
 
 import com.jodexindustries.donatecase.api.Case;
 import com.jodexindustries.donatecase.api.data.SubCommand;
 import com.jodexindustries.donatecase.api.data.SubCommandType;
+import com.jodexindustries.freecases.bootstrap.FreeCases;
+import com.jodexindustries.freecases.utils.CooldownManager;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -11,9 +13,11 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommandEX implements SubCommand {
-    CooldownManager cooldownManager = new CooldownManager();
-    Utils utils = new Utils();
+public class MainCommand implements SubCommand {
+    private final FreeCases freeCases;
+    public MainCommand(FreeCases freeCases) {
+        this.freeCases = freeCases;
+    }
 
     @Override
     public void execute(CommandSender sender, String[] args) {
@@ -24,17 +28,17 @@ public class CommandEX implements SubCommand {
             }
             Player player = (Player) sender;
             if (sender.hasPermission("freecases.use")) {
-                if (utils.isUsed(player.getName())) {
-                    int time = cooldownManager.getCooldown(player.getUniqueId());
-                    String secondchar = CustomConfig.getConfig().getString("Second");
-                    String minutechar = CustomConfig.getConfig().getString("Minute");
-                    String hourchar = CustomConfig.getConfig().getString("Hour");
+                if (!freeCases.getAddonConfig().getDataFile().getStringList("Used").contains(player.getName())) {
+                    int time = CooldownManager.getCooldown(player.getUniqueId());
+                    String secondChar = freeCases.getAddonConfig().getConfig().getString("Second");
+                    String minuteChar = freeCases.getAddonConfig().getConfig().getString("Minute");
+                    String hourChar = freeCases.getAddonConfig().getConfig().getString("Hour");
                     int hours = time / 3600;
                     int minutes = (time / 60) - hours * 60;
                     int seconds = time % 60 % 60;
-                    String hour = hours + hourchar;
-                    String minute = minutes + minutechar;
-                    String second = seconds + secondchar;
+                    String hour = hours + hourChar;
+                    String minute = minutes + minuteChar;
+                    String second = seconds + secondChar;
                     if (seconds == 0) {
                         second = "";
                     }
@@ -44,33 +48,33 @@ public class CommandEX implements SubCommand {
                             minute = "";
                         }
                     }
-                    String timerep = hour + minute + second;
-                    String casename = CustomConfig.getConfig().getString("Casename");
+                    String timeRep = hour + minute + second;
+                    String caseName = freeCases.getAddonConfig().getConfig().getString("Casename");
                     if (time == 0) {
                         sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                                CustomConfig.getConfig().getString("Done")));
-                        Case.addKeys(casename, sender.getName(), 1);
-                        List<String> players = CustomConfig.getData().getStringList("Used");
+                                freeCases.getAddonConfig().getConfig().getString("Done")));
+                        Case.addKeys(caseName, sender.getName(), 1);
+                        List<String> players = freeCases.getAddonConfig().getDataFile().getStringList("Used");
                         players.add(player.getName());
-                        CustomConfig.getData().set("Used", players);
-                        CustomConfig.saveData();
+                        freeCases.getAddonConfig().getDataFile().set("Used", players);
+                        freeCases.getAddonConfig().saveData();
                     } else {
                         sender.sendMessage(PlaceholderAPI.setPlaceholders(player, ChatColor.translateAlternateColorCodes('&',
-                                CustomConfig.getConfig().getString("Wait").replaceAll("%time%", timerep))));
+                                freeCases.getAddonConfig().getConfig().getString("Wait").replaceAll("%time%", timeRep))));
                     }
                 } else {
                     sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                            CustomConfig.getConfig().getString("AlreadyReceived")));
+                            freeCases.getAddonConfig().getConfig().getString("AlreadyReceived")));
                 }
             } else {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                        CustomConfig.getConfig().getString("PermissionsNeed")));
+                        freeCases.getAddonConfig().getConfig().getString("PermissionsNeed")));
             }
         } else {
             if(args[0].equalsIgnoreCase("reload")) {
                 if (sender.hasPermission("freecases.reload")) {
-                    CustomConfig.setup();
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', CustomConfig.getConfig().getString("ConfigReloaded")));
+                    freeCases.getAddonConfig().setup();
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', freeCases.getAddonConfig().getConfig().getString("ConfigReloaded")));
                 }
             }
         }
