@@ -1,5 +1,6 @@
 package com.jodexindustries.freecases.bootstrap;
 
+import com.jodexindustries.donatecase.api.CaseManager;
 import com.jodexindustries.donatecase.api.SubCommandManager;
 import com.jodexindustries.freecases.utils.CustomConfig;
 import com.jodexindustries.freecases.utils.Utils;
@@ -10,9 +11,11 @@ import java.io.File;
 
 public final class FreeCasesPlugin extends JavaPlugin implements FreeCases {
     private CustomConfig config;
+    private CaseManager api;
 
     @Override
     public void onEnable() {
+        api = new CaseManager(this);
         config = new CustomConfig(getLogger(), getDataFolder());
         if (!(new File(this.getDataFolder(), "Data.yml")).exists()) {
             saveResource("Data.yml", false);
@@ -25,7 +28,7 @@ public final class FreeCasesPlugin extends JavaPlugin implements FreeCases {
     }
     @Override
     public void onDisable() {
-        SubCommandManager.unregisterSubCommand("free");
+        api.getSubCommandManager().unregisterSubCommand("free");
     }
 
     @Override
@@ -37,5 +40,10 @@ public final class FreeCasesPlugin extends JavaPlugin implements FreeCases {
     @Override
     public Plugin getPlugin() {
         return this;
+    }
+
+    @Override
+    public CaseManager getAPI() {
+        return api;
     }
 }

@@ -1,6 +1,5 @@
 package com.jodexindustries.freecases.utils;
 
-import com.jodexindustries.donatecase.api.SubCommandManager;
 import com.jodexindustries.freecases.commands.MainCommand;
 import com.jodexindustries.freecases.events.EventListener;
 import com.jodexindustries.freecases.bootstrap.FreeCases;
@@ -12,6 +11,6 @@ public class Utils {
         if(Bukkit.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new Placeholder(freeCases).register();
         }
-        SubCommandManager.registerSubCommand("free", new MainCommand(freeCases));
+        freeCases.getAPI().getSubCommandManager().registerSubCommand("free", new MainCommand(freeCases));
     }
 }
