@@ -10,6 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,29 +29,12 @@ public class MainCommand implements SubCommand {
             }
             Player player = (Player) sender;
             if (sender.hasPermission("freecases.use")) {
-                if (!freeCases.getAddonConfig().getDataFile().getStringList("Used").contains(player.getName())) {
-                    int time = CooldownManager.getCooldown(player.getUniqueId());
-                    String secondChar = freeCases.getAddonConfig().getConfig().getString("Second");
-                    String minuteChar = freeCases.getAddonConfig().getConfig().getString("Minute");
-                    String hourChar = freeCases.getAddonConfig().getConfig().getString("Hour");
-                    int hours = time / 3600;
-                    int minutes = (time / 60) - hours * 60;
-                    int seconds = time % 60 % 60;
-                    String hour = hours + hourChar;
-                    String minute = minutes + minuteChar;
-                    String second = seconds + secondChar;
-                    if (seconds == 0) {
-                        second = "";
-                    }
-                    if (hours == 0) {
-                        hour = "";
-                        if (minutes == 0) {
-                            minute = "";
-                        }
-                    }
-                    String timeRep = hour + minute + second;
+                if (!freeCases.getAddonConfig().getDataFile().getStringList("Used").contains(player.getName()) ||
+                        !freeCases.getAddonConfig().getConfig().getBoolean("GetOneTime")) {
+                    long timeStamp = (CooldownManager.getCooldown(player.getUniqueId()) + (freeCases.getAddonConfig().getConfig().getLong("TimeToPlay") * 1000L) ) - System.currentTimeMillis();
+                    long time = Duration.ofMillis(timeStamp).toSeconds();
                     String caseName = freeCases.getAddonConfig().getConfig().getString("Casename");
-                    if (time == 0) {
+                    if (time <= 0) {
                         sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
                                 freeCases.getAddonConfig().getConfig().getString("Done")));
                         Case.addKeys(caseName, sender.getName(), 1);
@@ -60,7 +44,7 @@ public class MainCommand implements SubCommand {
                         freeCases.getAddonConfig().saveData();
                     } else {
                         sender.sendMessage(Utils.setPlaceholders(player, ChatColor.translateAlternateColorCodes('&',
-                                freeCases.getAddonConfig().getConfig().getString("Wait").replaceAll("%time%", timeRep))));
+                                freeCases.getAddonConfig().getConfig().getString("Wait").replaceAll("%time%", Utils.formatTime(time)))));
                     }
                 } else {
                     sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
