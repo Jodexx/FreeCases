@@ -29,8 +29,7 @@ public class MainCommand implements SubCommand {
             }
             Player player = (Player) sender;
             if (sender.hasPermission("freecases.use")) {
-                if (!freeCases.getAddonConfig().getDataFile().getStringList("Used").contains(player.getName()) ||
-                        !freeCases.getAddonConfig().getConfig().getBoolean("GetOneTime")) {
+                if (!freeCases.getAddonConfig().getDataFile().getStringList("Used").contains(player.getName())) {
                     long timeStamp = (CooldownManager.getCooldown(player.getUniqueId()) + (freeCases.getAddonConfig().getConfig().getLong("TimeToPlay") * 1000L) ) - System.currentTimeMillis();
                     long time = Duration.ofMillis(timeStamp).toSeconds();
                     String caseName = freeCases.getAddonConfig().getConfig().getString("Casename");
@@ -40,8 +39,12 @@ public class MainCommand implements SubCommand {
                         Case.addKeys(caseName, sender.getName(), 1);
                         List<String> players = freeCases.getAddonConfig().getDataFile().getStringList("Used");
                         players.add(player.getName());
-                        freeCases.getAddonConfig().getDataFile().set("Used", players);
-                        freeCases.getAddonConfig().saveData();
+                        if(freeCases.getAddonConfig().getConfig().getBoolean("GetOneTime")) {
+                            freeCases.getAddonConfig().getDataFile().set("Used", players);
+                            freeCases.getAddonConfig().saveData();
+                        } else {
+                            CooldownManager.setCooldown(player.getUniqueId(), System.currentTimeMillis());
+                        }
                     } else {
                         sender.sendMessage(Utils.setPlaceholders(player, ChatColor.translateAlternateColorCodes('&',
                                 freeCases.getAddonConfig().getConfig().getString("Wait").replaceAll("%time%", Utils.formatTime(time)))));
