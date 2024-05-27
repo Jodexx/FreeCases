@@ -5,7 +5,7 @@ import com.jodexindustries.donatecase.api.data.SubCommand;
 import com.jodexindustries.donatecase.api.data.SubCommandType;
 import com.jodexindustries.freecases.bootstrap.FreeCases;
 import com.jodexindustries.freecases.utils.CooldownManager;
-import me.clip.placeholderapi.PlaceholderAPI;
+import com.jodexindustries.freecases.utils.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -59,7 +59,7 @@ public class MainCommand implements SubCommand {
                         freeCases.getAddonConfig().getDataFile().set("Used", players);
                         freeCases.getAddonConfig().saveData();
                     } else {
-                        sender.sendMessage(PlaceholderAPI.setPlaceholders(player, ChatColor.translateAlternateColorCodes('&',
+                        sender.sendMessage(Utils.setPlaceholders(player, ChatColor.translateAlternateColorCodes('&',
                                 freeCases.getAddonConfig().getConfig().getString("Wait").replaceAll("%time%", timeRep))));
                     }
                 } else {
