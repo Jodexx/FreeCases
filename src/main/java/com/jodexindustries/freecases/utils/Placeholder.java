@@ -6,6 +6,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.Duration;
+
 public class Placeholder extends PlaceholderExpansion {
     private final FreeCases freeCases;
     public Placeholder(FreeCases freeCases) {
@@ -36,28 +38,11 @@ public class Placeholder extends PlaceholderExpansion {
     @Override
     public String onRequest(OfflinePlayer player, String params) {
         if(params.equalsIgnoreCase("time")) {
-            String secondchar = ChatColor.translateAlternateColorCodes('&', freeCases.getAddonConfig().getConfig().getString("Second"));
-            String minutechar = ChatColor.translateAlternateColorCodes('&', freeCases.getAddonConfig().getConfig().getString("Minute"));
-            String hourchar = ChatColor.translateAlternateColorCodes('&', freeCases.getAddonConfig().getConfig().getString("Hour"));
-            int time = CooldownManager.getCooldown(player.getUniqueId());
-            int hours = time / 3600;
-            int minutes = (time / 60) - hours * 60;
-            int seconds = time % 60 % 60;
-            String hour = hours + hourchar;
-            String minute = minutes + minutechar;
-            String second = seconds + secondchar;
-            if (seconds == 0) {
-                second = "";
-            }
-            if (hours == 0) {
-                hour = "";
-                if (minutes == 0) {
-                    minute = "";
-                }
-            }
-            String timerep = hour + minute + second;
-            if(time != 0) {
-                return timerep;
+            long timeStamp = (CooldownManager.getCooldown(player.getUniqueId()) + (freeCases.getAddonConfig().getConfig().getLong("TimeToPlay") * 1000L) ) - System.currentTimeMillis();
+            long time = Duration.ofMillis(timeStamp).toSeconds();
+            String result = Utils.formatTime(time);
+            if(time > 0) {
+                return result;
             } else {
                 return ChatColor.translateAlternateColorCodes('&', freeCases.getAddonConfig().getConfig().getString("Received"));
             }
