@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/FreeCases.main.iml" filepath="$PROJECT_DIR$/.idea/modules/FreeCases.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.jodexindustries.FreeCases.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.jodexindustries.FreeCases.main.iml" />
     </modules>
   </component>
 </project>
