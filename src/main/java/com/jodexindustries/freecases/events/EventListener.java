@@ -17,7 +17,8 @@ public class EventListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-            if (!freeCases.getAddonConfig().getDataFile().getStringList("Used").contains(player.getName())) {
+            if (!freeCases.getAddonConfig().getDataFile().getStringList("Used").contains(player.getName()) ||
+                    !freeCases.getAddonConfig().getConfig().getBoolean("GetOneTime")) {
                 CooldownManager.setCooldown(player.getUniqueId(), freeCases.getAddonConfig().getConfig().getInt("TimeToPlay"));
                 new BukkitRunnable() {
                     @Override
