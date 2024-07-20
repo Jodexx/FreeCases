@@ -3,9 +3,8 @@ package com.jodexindustries.freecases.commands;
 import com.jodexindustries.donatecase.api.Case;
 import com.jodexindustries.donatecase.api.data.SubCommand;
 import com.jodexindustries.donatecase.api.data.SubCommandType;
-import com.jodexindustries.freecases.bootstrap.FreeCases;
 import com.jodexindustries.freecases.utils.CooldownManager;
-import com.jodexindustries.freecases.utils.Utils;
+import com.jodexindustries.freecases.utils.Tools;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -15,9 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainCommand implements SubCommand {
-    private final FreeCases freeCases;
-    public MainCommand(FreeCases freeCases) {
-        this.freeCases = freeCases;
+    private final Tools t;
+    public MainCommand(Tools t) {
+        this.t = t;
     }
 
     @Override
@@ -29,39 +28,41 @@ public class MainCommand implements SubCommand {
             }
             Player player = (Player) sender;
             if (sender.hasPermission("freecases.use")) {
-                if (!freeCases.getAddonConfig().getDataFile().getStringList("Used").contains(player.getName())) {
-                    long timeStamp = (CooldownManager.getCooldown(player.getUniqueId()) + (freeCases.getAddonConfig().getConfig().getLong("TimeToPlay") * 1000L) ) - System.currentTimeMillis();
+                if (!t.getConfig().getConfig().getStringList("Used").contains(player.getName())) {
+                    long timeStamp = (CooldownManager.getCooldown(player.getUniqueId()) + (t.getConfig().getConfig().getLong("TimeToPlay") * 1000L) ) - System.currentTimeMillis();
                     long time = Duration.ofMillis(timeStamp).toSeconds();
-                    String caseName = freeCases.getAddonConfig().getConfig().getString("Casename");
+                    String caseName = t.getConfig().getConfig().getString("Casename");
                     if (time <= 0) {
                         sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                                freeCases.getAddonConfig().getConfig().getString("Done")));
+                                t.getConfig().getConfig().getString("Done", "")));
                         Case.addKeys(caseName, sender.getName(), 1);
-                        List<String> players = freeCases.getAddonConfig().getDataFile().getStringList("Used");
+                        List<String> players = t.getConfig().getData().getStringList("Used");
                         players.add(player.getName());
-                        if(freeCases.getAddonConfig().getConfig().getBoolean("GetOneTime")) {
-                            freeCases.getAddonConfig().getDataFile().set("Used", players);
-                            freeCases.getAddonConfig().saveData();
+                        if(t.getConfig().getConfig().getBoolean("GetOneTime")) {
+                            t.getConfig().getData().set("Used", players);
+                            t.getConfig().saveData();
                         } else {
                             CooldownManager.setCooldown(player.getUniqueId(), System.currentTimeMillis());
                         }
                     } else {
-                        sender.sendMessage(Utils.setPlaceholders(player, ChatColor.translateAlternateColorCodes('&',
-                                freeCases.getAddonConfig().getConfig().getString("Wait").replaceAll("%time%", Utils.formatTime(time)))));
+                        sender.sendMessage(t.setPlaceholders(player, ChatColor.translateAlternateColorCodes('&',
+                                t.getConfig().getConfig().getString("Wait", "")
+                                        .replaceAll("%time%", t.formatTime(time)))));
                     }
                 } else {
                     sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                            freeCases.getAddonConfig().getConfig().getString("AlreadyReceived")));
+                            t.getConfig().getConfig().getString("AlreadyReceived", "")));
                 }
             } else {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                        freeCases.getAddonConfig().getConfig().getString("PermissionsNeed")));
+                        t.getConfig().getConfig().getString("PermissionsNeed", "")));
             }
         } else {
             if(args[0].equalsIgnoreCase("reload")) {
                 if (sender.hasPermission("freecases.reload")) {
-                    freeCases.getAddonConfig().setup();
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', freeCases.getAddonConfig().getConfig().getString("ConfigReloaded")));
+                    t.getConfig().reloadConfig();
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                            t.getConfig().getConfig().getString("ConfigReloaded", "")));
                 }
             }
         }
@@ -83,6 +84,7 @@ public class MainCommand implements SubCommand {
     public SubCommandType getType() {
         return SubCommandType.PLAYER;
     }
+
     @Override
     public String getDescription() {
         return "Get free case";

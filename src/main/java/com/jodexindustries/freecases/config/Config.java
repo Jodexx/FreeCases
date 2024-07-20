@@ -1,6 +1,6 @@
-package com.jodexindustries.freecases.utils;
+package com.jodexindustries.freecases.config;
 
-import org.bukkit.configuration.file.FileConfiguration;
+import com.jodexindustries.freecases.bootstrap.Main;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -8,30 +8,34 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class CustomConfig {
-    private File configFile;
-    private File dataFile;
+public class Config {
+    private final File configFile;
+    private final File dataFile;
     private YamlConfiguration config;
     private YamlConfiguration data;
-    private final File dataFolder;
     private final Logger logger;
 
-    public CustomConfig(Logger logger, File dataFolder) {
-        this.logger = logger;
-        this.configFile = new File(dataFolder, "Config.yml");
+    public Config(Main main) {
+        this.logger = main.getLogger();
+        this.configFile = new File(main.getDataFolder(), "Config.yml");
+        this.dataFile = new File(main.getDataFolder(), "Data.yml");
+
+        if(!configFile.exists()) main.saveResource("Config.yml", false);
+        if(!dataFile.exists()) main.saveResource("Data.yml", false);
+
         this.config = YamlConfiguration.loadConfiguration(configFile);
-        this.dataFolder = dataFolder;
+        this.data = YamlConfiguration.loadConfiguration(dataFile);
     }
-    public void setup() {
-        configFile = new File(dataFolder, "Config.yml");
+
+    public void reloadConfig() {
         config = YamlConfiguration.loadConfiguration(configFile);
-        dataFile = new File(dataFolder, "Data.yml");
         data = YamlConfiguration.loadConfiguration(dataFile);
     }
-    public FileConfiguration getConfig() {
+
+    public YamlConfiguration getConfig() {
         return config;
     }
-    public FileConfiguration getDataFile() {
+    public YamlConfiguration getData() {
         return data;
     }
     public void saveData() {

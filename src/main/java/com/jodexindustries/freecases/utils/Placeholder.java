@@ -1,6 +1,5 @@
 package com.jodexindustries.freecases.utils;
 
-import com.jodexindustries.freecases.bootstrap.FreeCases;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -9,9 +8,10 @@ import org.jetbrains.annotations.NotNull;
 import java.time.Duration;
 
 public class Placeholder extends PlaceholderExpansion {
-    private final FreeCases freeCases;
-    public Placeholder(FreeCases freeCases) {
-        this.freeCases = freeCases;
+    private final Tools t;
+
+    public Placeholder(Tools t) {
+        this.t = t;
     }
 
 
@@ -27,7 +27,7 @@ public class Placeholder extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getVersion() {
-        return "1.0.5";
+        return t.getMain().getVersion();
     }
 
     @Override
@@ -38,13 +38,14 @@ public class Placeholder extends PlaceholderExpansion {
     @Override
     public String onRequest(OfflinePlayer player, String params) {
         if(params.equalsIgnoreCase("time")) {
-            long timeStamp = (CooldownManager.getCooldown(player.getUniqueId()) + (freeCases.getAddonConfig().getConfig().getLong("TimeToPlay") * 1000L) ) - System.currentTimeMillis();
+            long timeStamp = (CooldownManager.getCooldown(player.getUniqueId()) + (t.getConfig().getConfig().getLong("TimeToPlay") * 1000L) ) - System.currentTimeMillis();
             long time = Duration.ofMillis(timeStamp).toSeconds();
-            String result = Utils.formatTime(time);
+            String result = t.formatTime(time);
             if(time > 0) {
                 return result;
             } else {
-                return ChatColor.translateAlternateColorCodes('&', freeCases.getAddonConfig().getConfig().getString("Received"));
+                return ChatColor.translateAlternateColorCodes('&',
+                        t.getConfig().getConfig().getString("Received", ""));
             }
         }
 
