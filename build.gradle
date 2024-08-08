@@ -27,7 +27,7 @@ repositories {
 dependencies {
     compileOnly "org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT"
     compileOnly 'me.clip:placeholderapi:2.11.5'
-    compileOnly "com.jodexindustries.donatecase:DonateCaseAPI:2.2.3.5"
+    compileOnly "com.jodexindustries.donatecase:DonateCaseAPI:2.2.4.5"
 }
 
 def targetJavaVersion = 11
