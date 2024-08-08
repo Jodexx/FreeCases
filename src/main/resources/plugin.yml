@@ -1,6 +1,7 @@
 name: FreeCases
 version: '${version}'
 main: com.jodexindustries.freecases.bootstrap.MainPlugin
+author: "_Jodex__"
 api-version: 1.16
 depend:
   - DonateCase
