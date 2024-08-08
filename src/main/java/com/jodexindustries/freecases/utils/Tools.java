@@ -1,5 +1,7 @@
 package com.jodexindustries.freecases.utils;
 
+import com.jodexindustries.donatecase.api.data.SubCommandType;
+import com.jodexindustries.donatecase.api.data.subcommand.SubCommand;
 import com.jodexindustries.freecases.bootstrap.Main;
 import com.jodexindustries.freecases.commands.MainCommand;
 import com.jodexindustries.freecases.config.Config;
@@ -18,8 +20,15 @@ public class Tools {
     }
 
     public void load() {
-        main.getCaseAPI().getSubCommandManager().registerSubCommand("free",
-                new MainCommand(this));
+        MainCommand executor = new MainCommand(this);
+        SubCommand subCommand = main.getCaseAPI().getSubCommandManager().builder("free")
+                .executor(executor)
+                .tabCompleter(executor)
+                .type(SubCommandType.PLAYER)
+                .description("Get free case")
+                .build();
+
+        main.getCaseAPI().getSubCommandManager().registerSubCommand(subCommand);
         if(Bukkit.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new Placeholder(this).register();
         }

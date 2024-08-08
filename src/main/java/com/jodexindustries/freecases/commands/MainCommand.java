@@ -1,26 +1,27 @@
 package com.jodexindustries.freecases.commands;
 
 import com.jodexindustries.donatecase.api.Case;
-import com.jodexindustries.donatecase.api.data.SubCommand;
-import com.jodexindustries.donatecase.api.data.SubCommandType;
+import com.jodexindustries.donatecase.api.data.subcommand.SubCommandExecutor;
+import com.jodexindustries.donatecase.api.data.subcommand.SubCommandTabCompleter;
 import com.jodexindustries.freecases.utils.CooldownManager;
 import com.jodexindustries.freecases.utils.Tools;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainCommand implements SubCommand {
+public class MainCommand implements SubCommandExecutor, SubCommandTabCompleter {
     private final Tools t;
     public MainCommand(Tools t) {
         this.t = t;
     }
 
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public void execute(@NotNull CommandSender sender, @NotNull String label, String[] args) {
         if(args.length == 0) {
             if (!(sender instanceof Player)) {
                 sender.sendMessage("Don't use console!");
@@ -69,7 +70,7 @@ public class MainCommand implements SubCommand {
     }
 
     @Override
-    public List<String> getTabCompletions(CommandSender commandSender, String[] strings) {
+    public List<String> getTabCompletions(@NotNull CommandSender commandSender, @NotNull String label, String[] strings) {
         if(strings.length == 1) {
             List<String> list = new ArrayList<>();
             if(commandSender.hasPermission("freecases.reload")) {
@@ -78,15 +79,5 @@ public class MainCommand implements SubCommand {
             return list;
         }
         return new ArrayList<>();
-    }
-
-    @Override
-    public SubCommandType getType() {
-        return SubCommandType.PLAYER;
-    }
-
-    @Override
-    public String getDescription() {
-        return "Get free case";
     }
 }
